@@ -2,12 +2,12 @@
 import urllib
 from PIL import Image
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 
 
-
-    
 def home(request):
     return render_to_response('app/base.html')
+
 
 def webcat(request, image_url=None, max_length=100.0, color=True, font_size=7):
     """
@@ -48,3 +48,7 @@ def webcat(request, image_url=None, max_length=100.0, color=True, font_size=7):
                                                           "color_webcat": color_webcat,
                                                           'color': color,
                                                           })
+
+
+def verify(request):
+    return HttpResponse("loaderio-f45938ab864b663eaacfcb8eb41ca3e5")
