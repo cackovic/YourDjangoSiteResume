@@ -8,6 +8,9 @@ from django.http import HttpResponse
 def home(request):
     return render_to_response('app/base.html')
 
+def tracking(request):
+    return render_to_response('app/tracking.html')
+
 
 def webcat(request, image_url=None, max_length=100.0, color=True, font_size=7):
     """
