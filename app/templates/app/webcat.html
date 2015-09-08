@@ -1,8 +1,6 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <style type="text/css" media="all">
+{% extends 'app/base.html' %}
+{% block head %}
+<style type="text/css" media="all">
     pre {
       white-space: pre-wrap;       /* css-3 */
       white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -14,8 +12,9 @@
       font-size: {{ font_size }}px;
     }
   </style>
-</head>
-<body>
+{% endblock %}
+
+{% block webcat %}
   <pre>{% spaceless %}
       {% if color %}
           {% for row in color_webcat %}
@@ -28,5 +27,4 @@
           {{ webcat }}
       {% endif %}
   {% endspaceless %}</pre>
-</body>
-</html>
+{% endblock %}

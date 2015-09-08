@@ -1,99 +1,50 @@
-﻿"""
-Definition of views.
-"""
-
-from django.shortcuts import render
-from django.http import HttpRequest
-from django.template import RequestContext
+﻿import cStringIO
+import urllib
+from PIL import Image
 from django.shortcuts import render_to_response
-from datetime import datetime
 
-YOUR_INFO = {
-    'name' : 'Your name',
-    'bio' : 'What\'s your deal? What do you do?',
-    'email' : '', # Leave blank if you'd prefer not to share your email with other conference attendees
-    'twitter_username' : 'tweettweet', # No @ symbol, just the handle.
-    'github_username' : "fetchpush", 
-    'headshot_url' : '', # Link to your GitHub, Twitter, or Gravatar profile image.
-}
+
+
     
 def home(request):
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/base.html',
-        context_instance = RequestContext(request,
-            {
-                'attendee' : YOUR_INFO,    
-                'year': datetime.now().year,
-            })
-    )
+    return render_to_response('app/base.html')
 
-def webcat(request, imgname=None, maxLen=100.0, clr=True, fontSize=7):
+def webcat(request, image_url=None, max_length=100.0, color=True, font_size=7):
     """
     Based on http://github.com/hit9/img2txt.git
     """
-
-    import sys
-
-    from PIL import Image
-    import cStringIO
-    import urllib
-
-    if imgname is None:
-        # imgname = "/Users/ajna/Code/YourDjangoSiteResume/cats-animals-kittens-background.jpg"
-        imgname = "http://loremflickr.com/320/240/kitten"
-
-    # img = Image.open(imgname)
-    img = Image.open(cStringIO.StringIO(urllib.urlopen(imgname).read()))
     color_webcat = None
     webcat = None
 
+    if image_url is None:
+        image_url = "http://loremflickr.com/100/75/kitten"
 
-    # resize to: the max of the img is maxLen
+    img = Image.open(cStringIO.StringIO(urllib.urlopen(image_url).read()))
 
     width, height = img.size
-    rate = maxLen / max(width, height)
-    width = int(rate * width)  # cast to int
-
+    rate = max_length / max(width, height)
+    width = int(rate * width)
     height = int(rate * height)
-
     img = img.resize((width, height))
 
-
-    # get pixels
-    pixel = img.load()
+    pixels = img.load()
 
     # grayscale
-    color = "MNHQ$OC?7>!:-;. "
+    char_set = "MNHQ$OC?7>!:-;. "
 
-    webcat = ""
-
-    # for h in xrange(height):  # first go through the height,  otherwise will roate
-    #     for w in xrange(width):
-    #         rgb = pixel[w, h]
-    #         if clr:
-    #             color_webcat += "<span style=\"color:rgb" + str(rgb) + \
-    #                 ";\">▇</span>"
-    #         else:
-    #             webcat += color[int(sum(rgb) / 3.0 / 256.0 * 16)]
-    #     webcat += "\n"
-    #
-
-    if clr:
-        color_webcat = [[('\xe2\x96\x87', str(pixel[w, h])) for w in xrange(width)] for h in xrange(height)]
-        # color_webcat = [[(color[int(sum(pixel[w, h]) / 3.0 / 256.0 * 16)], str(pixel[w, h])) for w in xrange(width)] for h in xrange(height)]
-    # wrappe with html
+    if color:
+        color_webcat = [[('\xe2\x96\x87', str(pixels[w, h]))
+                         for w in xrange(width)]
+                        for h in xrange(height)]
     else:
         webcat = '\n'.join(
-            [''.join(map(str,[color[int(sum(pixel[w, h]) / 3.0 / 256.0 * 16)]
-                              for w in xrange(width)]))
+            [''.join(map(str, [char_set[int(sum(pixels[w, h]) / 3.0 / 256.0 * 16)]
+                               for w in xrange(width)]))
              for h in xrange(height)])
 
 
-
-    return render_to_response('app/webcat.html', context={"font_size": fontSize,
+    return render_to_response('app/webcat.html', context={"font_size": font_size,
                                                           "webcat": webcat,
                                                           "color_webcat": color_webcat,
-                                                          'color': clr,
+                                                          'color': color,
                                                           })
