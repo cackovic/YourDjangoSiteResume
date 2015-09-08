@@ -14,7 +14,8 @@ urlpatterns = patterns('',
 
     url(r'^$', 'app.views.home', name='home'),
     url(r'webcat', 'app.views.webcat', name='webcat'),
-    url(r'loaderio-f45938ab864b663eaacfcb8eb41ca3e5', 'app.views.verify', name="verify")
+    url(r'loaderio-f45938ab864b663eaacfcb8eb41ca3e5', 'app.views.verify', name="verify"),
+    url(r'tracking', 'app.views.verify', name='tracking'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
