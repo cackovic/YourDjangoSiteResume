@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-    <title>{{ attendee.name }} @ DjangoCon 2015</title>
+    <title>Ajna Cackovic @ DjangoCon 2015</title>
 
     {% load staticfiles %}
 
@@ -27,6 +27,9 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     
     <link href="{% static 'app/font-awesome/css/font-awesome.min.css' app/%}" rel="stylesheet" type="text/css">
+    {% block head %}
+    
+    {% endblock %}
 </head>
 <body id="page-top" class="index">
 
@@ -68,15 +71,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <img class="headshot img-responsive" src="{{ attendee.headshot_url }}" alt="">
-                    <div class="intro-text">
-                        <span class="name">{{ attendee.name }}</span>
-                        <hr class="star-light">
-                        <span class="skills">{{ attendee.title }}</span>
-                    </div>
-                    <div class="intro-text">
-                        <span class="skills">{{ attendee.bio }}</span>
-                    </div>                    
+                    {% block webcat %}
+                        <div class="intro-text">
+                            <span class="name"><a href="/webcat">Show me kittens!</a></span>
+                            <hr class="star-light">
+                            <span class="skills">This app downloads images automatically and might display innapropriate pics.</span>
+                        </div>
+                    {% endblock %}
                 </div>
             </div>
         </div>
@@ -91,36 +92,9 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <h3>Twitter: <a href="http://twitter.com/{{ attendee.twitter_username }}">@{{ attendee.twitter_username }}</a></h3>
-                        {% if attendee.email %}
-                            <h3>Email: <a href="mailto:{{ attendee.email }}">{{ attendee.email }}</a></h3>
-                        {% endif %}
-                        <h3>GitHub: <a href="http://github.com/{{ attendee.github_username }}">{{ attendee.github_username }}</a></h3>                            
+                        <h3>Twitter: <a href="http://twitter.com/cackovic">@cackovic</a></h3>
+                        <h3>GitHub: <a href="http://github.com/cackovic">cackovic</a></h3>                            
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-
-    
-    <!-- About Section -->
-    <section class="success" id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>What's this all about?</h2>
-                    <hr class="star-light">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <p>You probably didn’t know that the Microsoft Cloud provides support for not only Windows and .NET, but also Linux, Node.js, PHP, Java, Python, and more. Microsoft Azure is the open source friendly cloud platform designed to empower you to do more. </p>
-                </div>
-                <div class="col-lg-4">
-                    <p>This app was deployed as part of the <a href="http://djangocon.azurewebsites.net/">Azure DjangoCon Code Challenge</a>. </p>
-                    <p>Azure has great support for hosting Python without worrying about managing a VM and makes a great option for your Django apps.</p>
                 </div>
             </div>
         </div>
@@ -148,7 +122,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        Copyright &copy; {{ attendee.name }} {{ year }}
+                        Copyright &copy; Ajna Cackovic 2015
                     </div>
                 </div>
             </div>

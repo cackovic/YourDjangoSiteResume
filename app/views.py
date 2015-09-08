@@ -1,29 +1,50 @@
-﻿"""
-Definition of views.
-"""
+﻿import cStringIO
+import urllib
+from PIL import Image
+from django.shortcuts import render_to_response
 
-from django.shortcuts import render
-from django.http import HttpRequest
-from django.template import RequestContext
-from datetime import datetime
 
-YOUR_INFO = {
-    'name' : 'Your name',
-    'bio' : 'What\'s your deal? What do you do?',
-    'email' : '', # Leave blank if you'd prefer not to share your email with other conference attendees
-    'twitter_username' : 'tweettweet', # No @ symbol, just the handle.
-    'github_username' : "fetchpush", 
-    'headshot_url' : '', # Link to your GitHub, Twitter, or Gravatar profile image.
-}
+
     
 def home(request):
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/base.html',
-        context_instance = RequestContext(request,
-            {
-                'attendee' : YOUR_INFO,    
-                'year': datetime.now().year,
-            })
-    )
+    return render_to_response('app/base.html')
+
+def webcat(request, image_url=None, max_length=100.0, color=True, font_size=7):
+    """
+    Based on http://github.com/hit9/img2txt.git
+    """
+    color_webcat = None
+    webcat = None
+
+    if image_url is None:
+        image_url = "http://loremflickr.com/100/75/kitten"
+
+    img = Image.open(cStringIO.StringIO(urllib.urlopen(image_url).read()))
+
+    width, height = img.size
+    rate = max_length / max(width, height)
+    width = int(rate * width)
+    height = int(rate * height)
+    img = img.resize((width, height))
+
+    pixels = img.load()
+
+    # grayscale
+    char_set = "MNHQ$OC?7>!:-;. "
+
+    if color:
+        color_webcat = [[('\xe2\x96\x87', str(pixels[w, h]))
+                         for w in xrange(width)]
+                        for h in xrange(height)]
+    else:
+        webcat = '\n'.join(
+            [''.join(map(str, [char_set[int(sum(pixels[w, h]) / 3.0 / 256.0 * 16)]
+                               for w in xrange(width)]))
+             for h in xrange(height)])
+
+
+    return render_to_response('app/webcat.html', context={"font_size": font_size,
+                                                          "webcat": webcat,
+                                                          "color_webcat": color_webcat,
+                                                          'color': color,
+                                                          })
