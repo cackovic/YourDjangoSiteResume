@@ -1,1 +1,2 @@
 django<2
+git+https://github.com/hit9/img2txt.git#egg=img2txt

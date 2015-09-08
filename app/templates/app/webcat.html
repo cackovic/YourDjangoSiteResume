@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <style type="text/css" media="all">
+    pre {
+      white-space: pre-wrap;       /* css-3 */
+      white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+      white-space: -pre-wrap;      /* Opera 4-6 */
+      white-space: -o-pre-wrap;    /* Opera 7 */
+      word-wrap: break-word;       /* Internet Explorer 5.5+ */
+      font-family: 'Inconsolata', 'Consolas'!important;
+      line-height: 1.0;
+      font-size: {{ font_size }}px;
+    }
+  </style>
+</head>
+<body>
+  <pre>{% spaceless %}
+      {% if color %}
+          {% for row in color_webcat %}
+              {% for pixel_char, pixel_rgb in row %}
+                  <span style="color:rgb{{ pixel_rgb }};">{{ pixel_char }}</span>
+              {% endfor %}
+              <br>
+          {% endfor %}
+      {%  else %}
+          {{ webcat }}
+      {% endif %}
+  {% endspaceless %}</pre>
+</body>
+</html>
